@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace Coin_Sorter
 {
@@ -12,9 +14,16 @@ namespace Coin_Sorter
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        // Coin variables.
+        List<Coin> coins = new List<Coin>();
+        Random random = new Random();
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
+
             Content.RootDirectory = "Content";
         }
 
@@ -39,6 +48,30 @@ namespace Coin_Sorter
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // Load coin image.
+            Texture2D coinImage = Content.Load<Texture2D>("Textures/Coin");
+
+            // the following for loop allows a number of coins to randomly appear.
+            for (int i = 0; i < 10; i++)
+            {
+
+                int xPosition = RandomInt(
+                   100,
+                   GraphicsDevice.Viewport.Bounds.Width - 100);
+
+                int yPosition = RandomInt(
+                   100,
+                   GraphicsDevice.Viewport.Bounds.Height - 100);
+
+                coins.Add(new Coin(this,
+                    10,
+                    false,
+                    coinImage,
+                    new Vector2(xPosition, yPosition),
+                    Color.White,
+                    6));
+            }
 
             // TODO: use this.Content to load your game content here
         }
@@ -78,6 +111,11 @@ namespace Coin_Sorter
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+       
+        public int RandomInt(int min, int max)
+        {
+            return random.Next(min, max);
         }
     }
 }
