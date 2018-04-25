@@ -25,6 +25,8 @@ namespace Coin_Sorter
 
         public void Update(GameTime gameTime)
         {
+            UpdateAnimation(gameTime);
+
             CheckMouseState();
             CheckClicked();        
         }

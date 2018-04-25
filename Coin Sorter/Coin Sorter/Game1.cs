@@ -17,6 +17,7 @@ namespace Coin_Sorter
         // Coin variables.
         List<Coin> coins = new List<Coin>();
         Random random = new Random();
+        int[] coinValues = { 10, 20, 30 };
 
         public Game1()
         {
@@ -36,6 +37,7 @@ namespace Coin_Sorter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            IsMouseVisible = true;
 
             base.Initialize();
         }
@@ -55,7 +57,6 @@ namespace Coin_Sorter
             // the following for loop allows a number of coins to randomly appear.
             for (int i = 0; i < 10; i++)
             {
-
                 int xPosition = RandomInt(
                    100,
                    GraphicsDevice.Viewport.Bounds.Width - 100);
@@ -65,7 +66,7 @@ namespace Coin_Sorter
                    GraphicsDevice.Viewport.Bounds.Height - 100);
 
                 coins.Add(new Coin(this,
-                    10,
+                    coinValues[RandomInt(1, 3)],
                     false,
                     coinImage,
                     new Vector2(xPosition, yPosition),
@@ -95,6 +96,11 @@ namespace Coin_Sorter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            foreach(Coin c in coins)
+            {
+                c.Update(gameTime);
+            }
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -109,6 +115,15 @@ namespace Coin_Sorter
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            spriteBatch.Begin();
+
+            foreach(Coin c in coins)
+            {                
+                c.Draw(spriteBatch);
+            }
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
